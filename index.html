@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DMS Releases</title>
+</head>
+<body>
+  <main>
+    <h1>DMS Release Feed</h1>
+    <p id="generated">Loading...</p>
+    <section>
+      <h2>Latest</h2>
+      <div id="latest"></div>
+      <ul id="latest-changelog"></ul>
+    </section>
+    <section>
+      <h2>Release History</h2>
+      <ul id="history"></ul>
+    </section>
+  </main>
+  <script>
+    (async () => {
+      const [latestRes, indexRes] = await Promise.all([
+        fetch("./latest.json"),
+        fetch("./releases/index.json")
+      ]);
+      if (!latestRes.ok || !indexRes.ok) throw new Error("Feed unavailable");
+      const latestDoc = await latestRes.json();
+      const indexDoc = await indexRes.json();
+      const rel = latestDoc.latest;
+      document.getElementById("generated").textContent =
+        "Generated: " + latestDoc.generated_at;
+      document.getElementById("latest").innerHTML =
+        `<strong>v${rel.version}</strong> (${rel.channel}) · ${rel.published_at}`;
+      document.getElementById("latest-changelog").innerHTML =
+        (rel.changelog || []).map(i => `<li>${i}</li>`).join("");
+      document.getElementById("history").innerHTML =
+        (indexDoc.releases || []).map(r =>
+          `<li><a href="./releases/${r.tag}.json">v${r.version}</a> · ${r.published_at}</li>`
+        ).join("");
+    })().catch(() => {
+      document.body.insertAdjacentHTML("beforeend", "<p>Could not load release data.</p>");
+    });
+  </script>
+</body>
+</html>
+
