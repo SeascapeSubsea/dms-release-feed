@@ -2,47 +2,510 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DMS Releases</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Public DMS OS release feed and changelog portal." />
+  <title>DMS OS Release Feed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg-a: #eef5f9;
+      --bg-b: #d9e8f4;
+      --ink: #10263b;
+      --muted: #4f6b82;
+      --card: #ffffff;
+      --line: #b8ccdc;
+      --accent: #0f5d88;
+      --accent-soft: #d9ebf7;
+      --error-bg: #fceaea;
+      --error-ink: #942324;
+      --ok-bg: #e7f5ed;
+      --ok-ink: #1f6b3d;
+      --shadow: 0 12px 30px rgba(16, 38, 59, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Manrope", "Trebuchet MS", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 10%, rgba(15, 93, 136, 0.14), transparent 50%),
+        radial-gradient(circle at 92% 88%, rgba(17, 92, 124, 0.16), transparent 46%),
+        linear-gradient(155deg, var(--bg-a), var(--bg-b));
+      padding: 1.5rem;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .hero {
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 1.2rem;
+      backdrop-filter: blur(4px);
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-family: "Space Grotesk", "Verdana", sans-serif;
+      letter-spacing: 0.01em;
+    }
+
+    h1 {
+      font-size: clamp(1.4rem, 2vw + 1rem, 2rem);
+      margin-bottom: 0.4rem;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .status {
+      margin-top: 0.8rem;
+      display: inline-flex;
+      gap: 0.5rem;
+      align-items: center;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 0.35rem 0.7rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: transform 160ms ease;
+    }
+
+    .status.ok {
+      background: var(--ok-bg);
+      color: var(--ok-ink);
+      border-color: #b9e4cb;
+    }
+
+    .status.error {
+      background: var(--error-bg);
+      color: var(--error-ink);
+      border-color: #f0bbbb;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 1rem;
+      animation: rise 220ms ease-out both;
+    }
+
+    .card:nth-child(2) {
+      animation-delay: 70ms;
+    }
+
+    .card:nth-child(3) {
+      animation-delay: 130ms;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    dl {
+      margin: 0;
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      border-bottom: 1px dashed #d8e4ee;
+      padding-bottom: 0.4rem;
+    }
+
+    dt {
+      color: var(--muted);
+    }
+
+    dd {
+      margin: 0;
+      text-align: right;
+      font-weight: 600;
+      word-break: break-word;
+    }
+
+    ul {
+      margin: 0.6rem 0 0;
+      padding-left: 1.2rem;
+    }
+
+    li {
+      padding: 0.16rem 0;
+      color: #173853;
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: 2px;
+      font-weight: 600;
+    }
+
+    .history-item {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      align-items: baseline;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .endpoint-list {
+      list-style: none;
+      margin: 0.7rem 0 0;
+      padding: 0;
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .endpoint-list li {
+      background: var(--accent-soft);
+      border-radius: 10px;
+      padding: 0.5rem 0.6rem;
+    }
+
+    .footnote {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 1rem;
+      }
+
+      .hero,
+      .card {
+        border-radius: 12px;
+      }
+
+      dd {
+        text-align: left;
+      }
+
+      .row {
+        flex-direction: column;
+        gap: 0.2rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <main>
-    <h1>DMS Release Feed</h1>
-    <p id="generated">Loading...</p>
-    <section>
-      <h2>Latest</h2>
-      <div id="latest"></div>
-      <ul id="latest-changelog"></ul>
-    </section>
-    <section>
-      <h2>Release History</h2>
-      <ul id="history"></ul>
-    </section>
+    <header class="hero">
+      <h1>DMS OS Release Feed</h1>
+      <p class="subtitle">Machine-readable release metadata with a human-readable summary.</p>
+      <p id="status" class="status" role="status" aria-live="polite">Loading release feed...</p>
+    </header>
+
+    <div class="cards">
+      <section class="card">
+        <h2>Latest Release</h2>
+        <dl>
+          <div class="row"><dt>Version</dt><dd id="latest-version">-</dd></div>
+          <div class="row"><dt>Tag</dt><dd id="latest-tag">-</dd></div>
+          <div class="row"><dt>Channel</dt><dd id="latest-channel">-</dd></div>
+          <div class="row"><dt>Published</dt><dd id="latest-published">-</dd></div>
+          <div class="row"><dt>Generated</dt><dd id="latest-generated">-</dd></div>
+          <div class="row"><dt>Release URL</dt><dd id="latest-release-url">-</dd></div>
+        </dl>
+
+        <h3 style="margin-top: 1rem;">Changelog</h3>
+        <ul id="latest-changelog">
+          <li>Loading changelog...</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Release History</h2>
+        <ul id="history-list">
+          <li>Loading release history...</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Raw Endpoints</h2>
+        <ul id="raw-links" class="endpoint-list">
+          <li><a href="./latest.json">./latest.json</a></li>
+          <li><a href="./releases/index.json">./releases/index.json</a></li>
+        </ul>
+        <p class="footnote">Use these endpoints for backend polling and tooling integration.</p>
+      </section>
+    </div>
   </main>
+
   <script>
-    (async () => {
-      const [latestRes, indexRes] = await Promise.all([
-        fetch("./latest.json"),
-        fetch("./releases/index.json")
-      ]);
-      if (!latestRes.ok || !indexRes.ok) throw new Error("Feed unavailable");
-      const latestDoc = await latestRes.json();
-      const indexDoc = await indexRes.json();
-      const rel = latestDoc.latest;
-      document.getElementById("generated").textContent =
-        "Generated: " + latestDoc.generated_at;
-      document.getElementById("latest").innerHTML =
-        `<strong>v${rel.version}</strong> (${rel.channel}) · ${rel.published_at}`;
-      document.getElementById("latest-changelog").innerHTML =
-        (rel.changelog || []).map(i => `<li>${i}</li>`).join("");
-      document.getElementById("history").innerHTML =
-        (indexDoc.releases || []).map(r =>
-          `<li><a href="./releases/${r.tag}.json">v${r.version}</a> · ${r.published_at}</li>`
-        ).join("");
-    })().catch(() => {
-      document.body.insertAdjacentHTML("beforeend", "<p>Could not load release data.</p>");
-    });
+    (function () {
+      "use strict";
+
+      var latestEndpoint = "./latest.json";
+      var indexEndpoint = "./releases/index.json";
+
+      function getNode(id) {
+        return document.getElementById(id);
+      }
+
+      function setText(id, value) {
+        getNode(id).textContent = value;
+      }
+
+      function normalizeHref(path) {
+        if (typeof path !== "string" || path.length === 0) {
+          return "";
+        }
+
+        if (/^https?:\/\//i.test(path)) {
+          return path;
+        }
+
+        return "./" + path.replace(/^\.\//, "");
+      }
+
+      function formatDate(value) {
+        if (typeof value !== "string" || value.length === 0) {
+          return "Unknown";
+        }
+
+        var parsed = new Date(value);
+        if (Number.isNaN(parsed.getTime())) {
+          return value;
+        }
+
+        var formatted = parsed.toLocaleString(undefined, {
+          year: "numeric",
+          month: "short",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          timeZone: "UTC"
+        });
+
+        return formatted + " UTC";
+      }
+
+      function extractChangelog(releaseDoc) {
+        if (Array.isArray(releaseDoc.changelog) && releaseDoc.changelog.length > 0) {
+          return releaseDoc.changelog.map(function (entry) {
+            return String(entry);
+          });
+        }
+
+        if (typeof releaseDoc.changelog_markdown === "string") {
+          var lines = releaseDoc.changelog_markdown
+            .split("\n")
+            .map(function (line) {
+              return line.trim();
+            })
+            .filter(function (line) {
+              return line.length > 0;
+            })
+            .map(function (line) {
+              return line.replace(/^-\s*/, "");
+            });
+
+          if (lines.length > 0) {
+            return lines;
+          }
+        }
+
+        return ["No changelog entries available."];
+      }
+
+      function renderChangelog(changelogItems) {
+        var listNode = getNode("latest-changelog");
+        listNode.innerHTML = "";
+
+        changelogItems.forEach(function (item) {
+          var li = document.createElement("li");
+          li.textContent = item;
+          listNode.appendChild(li);
+        });
+      }
+
+      function renderHistory(releases) {
+        var listNode = getNode("history-list");
+        listNode.innerHTML = "";
+
+        if (!Array.isArray(releases) || releases.length === 0) {
+          var empty = document.createElement("li");
+          empty.textContent = "No releases published yet.";
+          listNode.appendChild(empty);
+          return;
+        }
+
+        releases.forEach(function (release) {
+          var item = document.createElement("li");
+          item.className = "history-item";
+
+          var filePath = typeof release.file === "string" && release.file.length > 0
+            ? release.file
+            : "";
+
+          if (filePath) {
+            var link = document.createElement("a");
+            link.href = normalizeHref(filePath);
+            link.textContent = release.version || release.tag || filePath;
+            item.appendChild(link);
+          } else {
+            item.textContent = release.version || release.tag || "unknown release";
+          }
+
+          var meta = document.createElement("span");
+          var channel = release.channel ? " | " + release.channel : "";
+          meta.className = "meta";
+          meta.textContent = formatDate(release.published_at) + channel;
+          item.appendChild(meta);
+
+          listNode.appendChild(item);
+        });
+      }
+
+      function renderRawLinks(releasePath) {
+        var linksNode = getNode("raw-links");
+
+        if (!releasePath) {
+          return;
+        }
+
+        var item = document.createElement("li");
+        var link = document.createElement("a");
+        var href = normalizeHref(releasePath);
+
+        link.href = href;
+        link.textContent = href;
+        item.appendChild(link);
+        linksNode.appendChild(item);
+      }
+
+      function setStatus(message, statusType) {
+        var statusNode = getNode("status");
+        statusNode.textContent = message;
+        statusNode.className = "status " + statusType;
+      }
+
+      async function fetchJson(path) {
+        var response = await fetch(path, { cache: "no-store" });
+
+        if (!response.ok) {
+          throw new Error(path + " returned HTTP " + response.status);
+        }
+
+        return response.json();
+      }
+
+      async function loadReleaseFeed() {
+        var docs = await Promise.all([
+          fetchJson(latestEndpoint),
+          fetchJson(indexEndpoint)
+        ]);
+
+        var latestDoc = docs[0];
+        var indexDoc = docs[1];
+
+        if (!latestDoc || typeof latestDoc !== "object" || !latestDoc.latest) {
+          throw new Error("latest.json is missing the latest object.");
+        }
+
+        if (typeof latestDoc.latest.file !== "string" || latestDoc.latest.file.length === 0) {
+          throw new Error("latest.json latest.file is missing.");
+        }
+
+        var releasePath = latestDoc.latest.file;
+        var releaseDoc = await fetchJson(normalizeHref(releasePath));
+
+        return {
+          latestDoc: latestDoc,
+          indexDoc: indexDoc,
+          releaseDoc: releaseDoc,
+          releasePath: releasePath
+        };
+      }
+
+      loadReleaseFeed()
+        .then(function (result) {
+          var latest = result.latestDoc.latest;
+          var releaseDoc = result.releaseDoc;
+
+          setText("latest-version", latest.version || latest.tag || "Unknown");
+          setText("latest-tag", latest.tag || latest.version || "Unknown");
+          setText("latest-channel", latest.channel || "Unknown");
+          setText("latest-published", formatDate(latest.published_at));
+          setText("latest-generated", formatDate(result.latestDoc.generated_at));
+
+          var releaseUrlNode = getNode("latest-release-url");
+          releaseUrlNode.textContent = "";
+
+          if (typeof latest.release_url === "string" && latest.release_url.length > 0) {
+            var releaseUrlLink = document.createElement("a");
+            releaseUrlLink.href = latest.release_url;
+            releaseUrlLink.textContent = latest.release_url;
+            releaseUrlNode.appendChild(releaseUrlLink);
+          } else {
+            releaseUrlNode.textContent = "Not provided";
+          }
+
+          renderChangelog(extractChangelog(releaseDoc));
+          renderHistory(result.indexDoc.releases || []);
+          renderRawLinks(result.releasePath);
+          setStatus("Release feed loaded successfully.", "ok");
+        })
+        .catch(function (error) {
+          setText("latest-version", "Unavailable");
+          setText("latest-tag", "Unavailable");
+          setText("latest-channel", "Unavailable");
+          setText("latest-published", "Unavailable");
+          setText("latest-generated", "Unavailable");
+          setText("latest-release-url", "Unavailable");
+          renderChangelog([
+            "Could not load release feed data.",
+            "Check latest.json and releases/index.json availability."
+          ]);
+          renderHistory([]);
+          setStatus("Release feed is unavailable right now.", "error");
+          console.error(error);
+        });
+    })();
   </script>
 </body>
 </html>
-

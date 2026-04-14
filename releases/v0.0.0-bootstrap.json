@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "product": "dms-os",
+  "tag": "v0.0.0-bootstrap",
+  "version": "0.0.0-bootstrap",
+  "channel": "stable",
+  "prerelease": false,
+  "published_at": "2026-04-14T00:00:00Z",
+  "release_url": "",
+  "changelog": [
+    "Release feed initialized."
+  ],
+  "changelog_markdown": "- Release feed initialized.",
+  "file": "releases/v0.0.0-bootstrap.json"
+}
