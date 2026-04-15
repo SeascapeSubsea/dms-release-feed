@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "product": "dms-os",
+  "tag": "v0.15.16",
+  "version": "0.15.16",
+  "channel": "stable",
+  "prerelease": false,
+  "published_at": "2026-04-15T13:22:17Z",
+  "release_url": "https://github.com/SeascapeSubsea/dms/releases/tag/v0.15.16",
+  "changelog": [
+    "More reliable network behavior: better switching between AP and Client mode, plus stronger recovery when Wi-Fi/hostapd has startup issues.",
+    "Improved Wi-Fi setup flow: more stable Wi-Fi scanning/connection testing and better handling of saved network settings.",
+    "Clearer network settings UX: unsaved changes are handled better, and save success/failure feedback is clearer.",
+    "Dive prep/dashboard fixes: fixed issues where diver panels or prepare state did not reset correctly after a new prepare.",
+    "At Surface event fixes: improved reliability of \u201cAt Surface\u201d event handling (including LCD stop-dive flow).",
+    "Sensor page/data fixes: pneumo values are now shown more consistently in live sensor data; fixes for pneumo index/calibration behavior and depth display edge cases.",
+    "PTD/prep data fixes: improvements for team/detail preset consistency and diver enable/disable behavior in preparation flow.",
+    "User/password improvements: password flow refined (including minimum length checks and smoother admin password-change path).",
+    "Firmware update included: baseboard firmware updated to v0.8."
+  ],
+  "changelog_markdown": "### Changelog\r\n\r\n- More reliable network behavior: better switching between AP and Client mode, plus stronger recovery when Wi-Fi/hostapd has startup issues.\r\n- Improved Wi-Fi setup flow: more stable Wi-Fi scanning/connection testing and better handling of saved network settings.\r\n- Clearer network settings UX: unsaved changes are handled better, and save success/failure feedback is clearer.\r\n- Dive prep/dashboard fixes: fixed issues where diver panels or prepare state did not reset correctly after a new prepare.\r\n- At Surface event fixes: improved reliability of \u201cAt Surface\u201d event handling (including LCD stop-dive flow).\r\n- Sensor page/data fixes: pneumo values are now shown more consistently in live sensor data; fixes for pneumo index/calibration behavior and depth display edge cases.\r\n- PTD/prep data fixes: improvements for team/detail preset consistency and diver enable/disable behavior in preparation flow.\r\n- User/password improvements: password flow refined (including minimum length checks and smoother admin password-change path).\r\n- Firmware update included: baseboard firmware updated to v0.8.",
+  "file": "releases/v0.15.16.json"
+}

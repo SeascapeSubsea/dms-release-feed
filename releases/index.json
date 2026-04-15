@@ -1,8 +1,17 @@
 {
   "schema_version": 1,
   "product": "dms-os",
-  "generated_at": "2026-04-14T00:00:00Z",
+  "generated_at": "2026-04-15T13:22:26Z",
   "releases": [
+    {
+      "tag": "v0.15.16",
+      "version": "0.15.16",
+      "channel": "stable",
+      "prerelease": false,
+      "published_at": "2026-04-15T13:22:17Z",
+      "release_url": "https://github.com/SeascapeSubsea/dms/releases/tag/v0.15.16",
+      "file": "releases/v0.15.16.json"
+    },
     {
       "tag": "v0.0.0-bootstrap",
       "version": "0.0.0-bootstrap",
